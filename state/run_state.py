@@ -1,0 +1,5 @@
+from dataclasses import dataclass,field
+@dataclass
+class RunState:
+    phase:str="intake"
+    artifacts:dict=field(default_factory=dict)
