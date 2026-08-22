@@ -22,4 +22,4 @@ line-length = 100
 exclude = [".git", ".venv", "AGENTS", "TOOLS", "SKILLS", "prompts", "schemas", "state", "tests/test_structure.py", "run.py", "examples/example_run.py"]
 
 [tool.ruff.lint]
-select = ["E", "F", "I"]
+select = ["E", "F"]
