@@ -6,8 +6,8 @@ from AGENTS.document_intake_agent import DocumentIntakeAgent
 from AGENTS.evidence_gap_agent import EvidenceGapAgent
 from AGENTS.requirements_mapper_agent import RequirementsMapperAgent
 from AGENTS.review_coordinator_agent import ReviewCoordinatorAgent
-from AGENTS.submission_gatekeeper_agent import SubmissionGatekeeperAgent
 from AGENTS.traceability_agent import TraceabilityAgent
+from AGENTS.submission_gatekeeper_agent import SubmissionGatekeeperAgent
 
 
 REQUIRED_GATES = {
@@ -43,7 +43,6 @@ def _specialist_outputs(context: dict[str, Any]) -> dict[str, Any]:
 
 def evaluate_submission(context: dict[str, Any]) -> dict[str, Any]:
     blockers = [message for gate, message in REQUIRED_GATES.items() if not context.get(gate, False)]
-
     if context.get("unresolved_evidence_gaps"):
         blockers.append("unresolved evidence gaps remain")
     if context.get("unresolved_conflicts"):
@@ -56,7 +55,6 @@ def evaluate_submission(context: dict[str, Any]) -> dict[str, Any]:
         blockers.append("major review findings remain open")
     if context.get("human_approval") is not True:
         blockers.append("final authorized quality/regulatory approval is required")
-
     return {
         "status": "READY_FOR_AUTHORIZED_SUBMISSION" if not blockers else "BLOCKED",
         "blockers": blockers,
@@ -71,7 +69,4 @@ def evaluate_submission(context: dict[str, Any]) -> dict[str, Any]:
 
 
 def run_workflow(context: dict[str, Any]) -> dict[str, Any]:
-    return {
-        "specialists": _specialist_outputs(context),
-        "governance": evaluate_submission(context),
-    }
+    return {"specialists": _specialist_outputs(context), "governance": evaluate_submission(context)}
