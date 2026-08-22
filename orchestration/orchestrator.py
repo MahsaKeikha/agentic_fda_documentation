@@ -6,8 +6,8 @@ from AGENTS.document_intake_agent import DocumentIntakeAgent
 from AGENTS.evidence_gap_agent import EvidenceGapAgent
 from AGENTS.requirements_mapper_agent import RequirementsMapperAgent
 from AGENTS.review_coordinator_agent import ReviewCoordinatorAgent
-from AGENTS.traceability_agent import TraceabilityAgent
 from AGENTS.submission_gatekeeper_agent import SubmissionGatekeeperAgent
+from AGENTS.traceability_agent import TraceabilityAgent
 
 
 REQUIRED_GATES = {
