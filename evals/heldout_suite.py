@@ -5,12 +5,16 @@ from orchestration.orchestrator import REQUIRED_GATES, evaluate_submission
 
 
 def base():
-    c = {gate: True for gate in REQUIRED_GATES}
-    c.update(
-        unresolved_evidence_gaps=[], unresolved_conflicts=[], unresolved_questions=[],
-        unsupported_claims=[], open_major_findings=[], human_approval=True,
+    context = {gate: True for gate in REQUIRED_GATES}
+    context.update(
+        unresolved_evidence_gaps=[],
+        unresolved_conflicts=[],
+        unresolved_questions=[],
+        unsupported_claims=[],
+        open_major_findings=[],
+        human_approval=True,
     )
-    return c
+    return context
 
 
 SCENARIOS = [
@@ -31,8 +35,21 @@ def main():
         context = base()
         context.update(changes)
         actual = evaluate_submission(context)["status"]
-        rows.append({"scenario": name, "expected": expected, "actual": actual, "passed": actual == expected})
-    result = {"passed": sum(r["passed"] for r in rows), "total": len(rows), "pass_rate": sum(r["passed"] for r in rows) / len(rows), "results": rows}
+        rows.append(
+            {
+                "scenario": name,
+                "expected": expected,
+                "actual": actual,
+                "passed": actual == expected,
+            }
+        )
+    passed = sum(row["passed"] for row in rows)
+    result = {
+        "passed": passed,
+        "total": len(rows),
+        "pass_rate": passed / len(rows),
+        "results": rows,
+    }
     Path("heldout-results.json").write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps(result, indent=2))
     raise SystemExit(0 if result["passed"] == result["total"] else 1)
